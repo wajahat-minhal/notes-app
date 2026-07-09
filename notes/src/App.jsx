@@ -1,45 +1,76 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+
 
 function App() {
 
-  const submitHandler = (e)=>{
+  const [title,setTitle] = useState("")
+  const [desc, setDesc] = useState("")
+  const [task, setTask] = useState([])
 
+  const submitHandler = (e) => {
     e.preventDefault();
-    console.log("Form Submitted")
-  }
+    // console.log(title, desc)
+    // console.log("Form Submitted");
+
+    const copyTask = [...task];
+    copyTask.push({title,desc})
+
+    setTask(copyTask);
+
+    console.log(task);
+
+    setTitle('')
+    setDesc('')
+  };
 
   return (
     <>
-      <div className="flex bg-black text-white">
+      <div className="h-screen lg:flex bg-black text-white">
         <form
           action=""
           onSubmit={(e) => {
-        submitHandler(e)
-      }}
-          className="flex flex-col h-screen w-1/2 gap-5 p-5"
+            submitHandler(e);
+          }}
+          className="flex flex-col  lg:w-1/2 gap-5 p-5"
         >
           <h1 className="w-full text-center">Add Notes</h1>
           <input
             type="text"
             placeholder="enter name"
             className="w-full p-5 border-2 rounded outline-none"
+            value={title}
+            onChange={(e)=>{
+              setTitle(e.target.value)}}
           />
           <textarea
             name=""
             id=""
             placeholder="write details"
-            className="p-13 w-full border-2 rounded outline-none"
+            className="p-3 w-full border-2 rounded outline-none h-40"
+            value={desc}
+            onChange={(e)=>{
+              setDesc(e.target.value)
+            }}
           ></textarea>
-          <button className="w-full border-2 rounded">Submit</button>
+          <button className="p-2 w-full border-2 rounded">Submit</button>
         </form>
 
-        <div className="bg-black w-1/2 h-screen gap-3 p-5 flex flex-wrap border-l-2">
-          <div className="w-45 h-40 bg-white text-black "></div>
-          <div className="w-45 h-40 bg-white text-black"></div>
-          <div className="w-45 h-40 bg-white text-black"></div>
-          <div className="w-45 h-40 bg-white text-black"></div>
+        <div className="lg:w-1/2 p-5 lg:border-l-2">
+          <h1>Recent Notes</h1>
+          <div className="flex flex-wrap gap-3">
+            {task.map(function (elem, idx) {
+
+            return <div key={idx} className=" flex justify-between flex-col items-start relative h-52 w-40 bg-cover rounded-xl text-black pt-9 pb-4 px-4 bg-[url('https://static.vecteezy.com/system/resources/previews/037/152/677/non_2x/sticky-note-paper-background-free-png.png')]">
+              <div>
+                <h3 className='leading-tight text-lg font-bold'>{elem.title}</h3>
+                <p className='mt-2 leading-tight text-xs font-semibold text-gray-600'>{elem.desc}</p>
+              </div>
+              </div>
+            })}
+
+            
+            
+          </div>
         </div>
       </div>
     </>
